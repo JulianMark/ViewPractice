@@ -19,6 +19,8 @@ import view.utils.Utils;
 public class frmPrincipal extends javax.swing.JFrame {
     private DefaultComboBoxModel modelTypesObject;
     private List <PracticeObject> listObjects;
+    private boolean flagBtnNew;
+    private boolean flagBtnEdit;
     /**
      * Creates new form frmPrincipal
      */
@@ -27,6 +29,9 @@ public class frmPrincipal extends javax.swing.JFrame {
         listObjects = new ArrayList<>();
         fillListPracticeObjects ();
         fillCboTypesObject();
+        initButtonsAndObjects(true);
+        flagBtnNew = false;
+        flagBtnNew = false;
     }
 
     /**
@@ -46,6 +51,10 @@ public class frmPrincipal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        btnNew = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnSend = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,6 +81,34 @@ public class frmPrincipal extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("tipo del objeto seleccionado en la lista");
 
+        btnNew.setText("Nuevo");
+        btnNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewActionPerformed(evt);
+            }
+        });
+
+        btnEdit.setText("Modificar");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
+
+        btnSend.setText("Aceptar");
+        btnSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendActionPerformed(evt);
+            }
+        });
+
+        btnCancel.setText("Cancelar");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -79,19 +116,31 @@ public class frmPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtDescriptionObject)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtIdObject, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(cboTypesObject, javax.swing.GroupLayout.Alignment.TRAILING, 0, 102, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtDescriptionObject)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtIdObject, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(cboTypesObject, javax.swing.GroupLayout.Alignment.TRAILING, 0, 102, Short.MAX_VALUE))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnEdit, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnCancel, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(95, 95, 95))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -109,9 +158,17 @@ public class frmPrincipal extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(cboTypesObject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(cboTypesObject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnNew)
+                            .addComponent(btnEdit))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnSend)
+                            .addComponent(btnCancel)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -123,6 +180,32 @@ public class frmPrincipal extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_lstObjectsValueChanged
+
+    private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
+         cleanFields();
+         flagBtnNew = true;
+         initButtonsAndObjects(false);
+         txtIdObject.requestFocus();
+    }//GEN-LAST:event_btnNewActionPerformed
+
+    private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
+        //int id = txtIdObject.getText();
+        
+        
+    }//GEN-LAST:event_btnSendActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        cleanFields();
+        initButtonsAndObjects(true);
+        flagBtnNew = false;
+        flagBtnEdit = false;
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+         initButtonsAndObjects(false);
+         flagBtnEdit = true;
+         txtIdObject.setEnabled(false);
+    }//GEN-LAST:event_btnEditActionPerformed
 
     /**
      * @param args the command line arguments
@@ -157,6 +240,23 @@ public class frmPrincipal extends javax.swing.JFrame {
                 new frmPrincipal().setVisible(true);
             }
         });
+    }
+    
+    private void initButtonsAndObjects(boolean x){
+        btnNew.setEnabled(x);
+        btnEdit.setEnabled(x);
+        btnSend.setEnabled(!x);
+        btnCancel.setEnabled(!x);
+        lstObjects.setEnabled(x);
+        txtIdObject.setEnabled(!x);
+        txtDescriptionObject.setEnabled(!x);
+        cboTypesObject.setEnabled(!x);
+    }
+    
+    private void cleanFields(){
+        txtIdObject.setText("");
+        txtDescriptionObject.setText("");
+        cboTypesObject.setSelectedIndex(-1);
     }
     
     //metodo para llenar Jlist de object llamado desde el constructor
@@ -257,6 +357,10 @@ public class frmPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnNew;
+    private javax.swing.JButton btnSend;
     private javax.swing.JComboBox<String> cboTypesObject;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
