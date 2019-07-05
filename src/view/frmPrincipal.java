@@ -8,6 +8,7 @@ package view;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import model.PracticeObject;
 import model.PracticeTypeObject;
 import view.utils.Utils;
@@ -31,7 +32,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         fillCboTypesObject();
         initButtonsAndObjects(true);
         flagBtnNew = false;
-        flagBtnNew = false;
+        flagBtnEdit = false;
     }
 
     /**
@@ -182,29 +183,51 @@ public class frmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_lstObjectsValueChanged
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-         cleanFields();
-         flagBtnNew = true;
-         initButtonsAndObjects(false);
-         txtIdObject.requestFocus();
+        flagBtnNew = true;
+        cleanFields();
+        initButtonsAndObjects(false);
+        txtIdObject.requestFocus();
     }//GEN-LAST:event_btnNewActionPerformed
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
-        //int id = txtIdObject.getText();
         
+        int id = Integer.parseInt(txtIdObject.getText());
+        String description = txtDescriptionObject.getText();
+        PracticeTypeObject type = (PracticeTypeObject) cboTypesObject.getSelectedItem();
+        
+        PracticeObject object = new PracticeObject(id, description, type.getId());
+        
+        if (flagBtnNew){
+            insertObject(object);
+            fillListPracticeObjects ();
+            flagBtnNew = false;
+            cleanFields();
+        }else {
+            updateObject(object);
+        } 
+        if (flagBtnEdit){
+            flagBtnEdit = false;
+        }
+        initButtonsAndObjects(true);
         
     }//GEN-LAST:event_btnSendActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        cleanFields();
+        //cleanFields();
+        fillFieldFromJListPracticeObjects(0);
         initButtonsAndObjects(true);
         flagBtnNew = false;
         flagBtnEdit = false;
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-         initButtonsAndObjects(false);
-         flagBtnEdit = true;
-         txtIdObject.setEnabled(false);
+        if (lstObjects.getSelectedIndex() < 0){
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un objeto de la lista para poder modificarlo");
+        }else{
+            flagBtnEdit = true;
+            initButtonsAndObjects(false);
+            txtIdObject.setEnabled(false);
+        }
     }//GEN-LAST:event_btnEditActionPerformed
 
     /**
@@ -261,7 +284,9 @@ public class frmPrincipal extends javax.swing.JFrame {
     
     //metodo para llenar Jlist de object llamado desde el constructor
     private void fillListPracticeObjects () {
-        listObjects = createListObjectPractice(); // metodo que remplaza a un dao.select()
+        if (!flagBtnNew && !flagBtnEdit){
+            listObjects = createListObjectPractice(); // metodo que remplaza a un dao.select()
+        }
         Utils.fillJList(listObjects, lstObjects); 
     }
     
@@ -355,7 +380,26 @@ public class frmPrincipal extends javax.swing.JFrame {
         
         return listObject;
     }
-
+    
+    //Metodo creado para devolver un int que inserta un objeto llamado desde btnSendActionPerformed
+    private int insertObject (PracticeObject object){
+        listObjects.add(object);
+        return 0;
+    }
+    
+    //Metodo creado para devolver un int que updatea un objeto llamado desde btnSendActionPerformed
+    private int updateObject (PracticeObject object){
+        
+        for (PracticeObject o : listObjects) {
+            if (object.getId() == o.getId()){
+                o.setDescription(object.getDescription());
+                o.setIdType(object.getIdType());
+            }
+        }
+        return 0;
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnEdit;
